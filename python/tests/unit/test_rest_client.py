@@ -36,21 +36,26 @@ def txn_verification_failing_client(user_address):
 
 @pytest.mark.parametrize("recipient_addresses, apply_fee, expected_result", [
     (gen_recipient_addresses(1), True,
-     FULL_TRANSFER_AMOUNT * (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / 100),
+     FULL_TRANSFER_AMOUNT *
+     (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / 100),
     (gen_recipient_addresses(1), False,
      FULL_TRANSFER_AMOUNT),
     (gen_recipient_addresses(3), True,
-     FULL_TRANSFER_AMOUNT * (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / (3 * 100)),
+     FULL_TRANSFER_AMOUNT *
+     (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / (3 * 100)),
     (gen_recipient_addresses(3), False,
      FULL_TRANSFER_AMOUNT / 3),
     (gen_recipient_addresses(20), True,
-     FULL_TRANSFER_AMOUNT * (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / (20 * 100)),
+     FULL_TRANSFER_AMOUNT *
+     (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / (20 * 100)),
     (gen_recipient_addresses(20), False,
      FULL_TRANSFER_AMOUNT / 20)
 ])
 def test_percentage_deduction(recipient_addresses, apply_fee, expected_result):
     assert JobcoinClient.calculate_disbursement(
-        recipient_addresses, FULL_TRANSFER_AMOUNT, apply_fee) == expected_result
+        recipient_addresses,
+        FULL_TRANSFER_AMOUNT,
+        apply_fee) == expected_result
 
 
 @pytest.mark.parametrize("recipient_addresses, apply_fee, input_amount", [

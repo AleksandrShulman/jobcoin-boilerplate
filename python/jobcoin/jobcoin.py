@@ -58,7 +58,8 @@ class JobcoinClient:
                 else:
                     failures.append(request)
             except JobcoinException as jce:
-                logging.error("There was an issue with this operation - %s", jce)
+                logging.error("There was an issue"
+                              "with this operation - %s", jce)
                 failures.append(request)
 
         return successes, failures
@@ -69,7 +70,7 @@ class JobcoinClient:
             "toAddress": request.address,
             "amount": request.amount
         }
-        logging.info("About to send %s to %s", request.amount,request.address)
+        logging.info("About to send %s to %s", request.amount, request.address)
         response = requests.post(API_TRANSACTIONS_URL, data=inputs)
         if response.status_code == HTTPStatus.OK.value:
             if self.verify_transaction(request):
@@ -88,12 +89,13 @@ class JobcoinClient:
     def verify_transaction(self, request):
         transactions = self.get_transactions()
         for transaction in reversed(transactions):
-            txn = Transaction(transaction['fromAddress'],transaction['toAddress'],
+            txn = Transaction(transaction['fromAddress'],
+                              transaction['toAddress'],
                               transaction['amount'])
-            # Note: One might worry that this will give a false
-            # positive for older transactions that were identical, if they exist.
-            # However, because of the uniqueness of the newly-generated accounts,
-            # this should not happen.
+            # Note: One might worry that this will give a false positive
+            # for older transactions that were identical, if they exist.
+            # However, because of the uniqueness of the newly-generated
+            # accounts this should not happen.
             if (txn.to_address == request.address and
                     str(txn.amount) == str(request.amount)):
                 return True
