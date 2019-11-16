@@ -25,8 +25,15 @@ class Transaction:
         self.amount = amount
 
 
+class JobcoinInfusion(Transaction):
+    def __init__(self, to_address, amount):
+        super(JobcoinInfusion, self).__init__(
+            JobcoinClient.JOBCOIN_GENERATOR, to_address, amount)
+
+
 class JobcoinClient:
 
+    JOBCOIN_GENERATOR = "automatic_jobservice_token_creator"
     DISBURSEMENT_FEE_PERCENT = 4.0
 
     def __init__(self, address):
@@ -62,16 +69,18 @@ class JobcoinClient:
             "toAddress": request.address,
             "amount": request.amount
         }
-        logging.info("About to send %s to %s", request.amount, request.address)
+        logging.info("About to send %s to %s", request.amount,request.address)
         response = requests.post(API_TRANSACTIONS_URL, data=inputs)
         if response.status_code == HTTPStatus.OK.value:
             if self.verify_transaction(request):
                 return request.amount
             else:
-                logging.error("Could not assert that the transaction was present in the chain!")
+                logging.error("Could not assert that the transaction"
+                              "was present in the chain!")
 
         if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY.value:
-            raise InsufficientFundsException("Insufficient Funds: {0}".format(response.text))
+            raise InsufficientFundsException("Insufficient Funds: {0}".format(
+                response.text))
 
         if response.status_code == HTTPStatus.BAD_GATEWAY.value:
             raise BadRequestException("Bad request - %s", response.text)
@@ -79,16 +88,20 @@ class JobcoinClient:
     def verify_transaction(self, request):
         transactions = self.get_transactions()
         for transaction in reversed(transactions):
-            txn = Transaction(transaction['fromAddress'], transaction['toAddress'], transaction['amount'])
-            # Note: One might worry that this will give a false positive for older transactions
-            # that were identical, if they exist.
-            # However, because of the uniqueness of the newly-generated accounts, this should not happen.
-            if txn.to_address == request.address and str(txn.amount) == str(request.amount):
+            txn = Transaction(transaction['fromAddress'],transaction['toAddress'],
+                              transaction['amount'])
+            # Note: One might worry that this will give a false
+            # positive for older transactions that were identical, if they exist.
+            # However, because of the uniqueness of the newly-generated accounts,
+            # this should not happen.
+            if (txn.to_address == request.address and
+                    str(txn.amount) == str(request.amount)):
                 return True
         return False
 
     def disburse_funds(self, addresses, amount, apply_fee=True):
-        amount_per_client = JobcoinClient.calculate_disbursement(addresses, amount, apply_fee)
+        amount_per_client = JobcoinClient.calculate_disbursement(
+            addresses, amount, apply_fee)
         return self.send_coins(addresses, amount_per_client)
 
     @staticmethod
@@ -98,11 +111,11 @@ class JobcoinClient:
         except Exception:
             raise IllegalArgumentException("Bad input")
 
-        if not addresses or not amount or amount < 0:
+        if not addresses or not amount or float(amount) < 0:
             raise IllegalArgumentException("Bad input")
         if apply_fee:
             percentage = 100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT
-            amount = (percentage / 100) * amount
+            amount = float((percentage / 100)) * float(amount)
         result = amount / len(addresses)
         return result
 
@@ -113,4 +126,5 @@ class JobcoinClient:
         if response.status_code == HTTPStatus.OK:
             return json.loads(response.text)
 
-        logging.error("Unexpected status code %d with response %s", response.status_code, response.text)
+        logging.error("Unexpected status code %d with response %s",
+                      response.status_code, response.text)

@@ -13,6 +13,8 @@ from jobcoin.jobcoin import JobcoinClient
 def main(address):
     click.echo('Welcome, {0} to the Jobcoin mixer!\n'.format(address))
     while True:
+        successes = list()
+        failures = list()
         # TODO: Fill out more of this
         addresses = click.prompt(
             'Please enter a comma-separated list of new, unused Jobcoin\n'
@@ -47,7 +49,7 @@ def main(address):
                 failure.amount, failure.address))
             continue
         click.echo(
-            '\nJust sent {amount} jobcoins to {deposit_address}. Please standby for disbursement.'
+            '\nJust sent {amount} jobcoins to {deposit_address}. Please standby for disbursement.....'
             '\nThere will be a standard {disbursement_fee_percent} percent fee.\n'.format(
                 amount=amount, deposit_address=deposit_address,
                 disbursement_fee_percent=JobcoinClient.DISBURSEMENT_FEE_PERCENT))

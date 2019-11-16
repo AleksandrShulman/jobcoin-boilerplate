@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-import json
+#!/usr/local/bin/python3
 import re
 
 import pytest
@@ -76,7 +75,7 @@ def test_cli_quit_at_amount():
 
 def test_cli_quit_at_end():
     runner = CliRunner()
-    result = runner.invoke(cli.main, args=["inputAddress"], input="abc234\n2\quit()")
+    result = runner.invoke(cli.main, args=["inputAddress"], input="abc234\n2\nquit()")
 
     assert "Thank you for using Jobcoin" in result.output
     assert result.exit_code == 0

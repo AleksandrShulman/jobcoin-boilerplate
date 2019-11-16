@@ -1,7 +1,7 @@
 import mock
 import pytest
 
-from jobcoin.errors.IllegalArgumentException import IllegalArgumentException
+from jobcoin.errors import IllegalArgumentException
 from jobcoin.jobcoin import JobcoinClient
 from tests.utils.generator import gen_recipient_addresses
 
@@ -57,15 +57,14 @@ def test_percentage_deduction(recipient_addresses, apply_fee, expected_result):
     (list(), True, FULL_TRANSFER_AMOUNT * (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / 100),
     (gen_recipient_addresses(1), False, None),
     (gen_recipient_addresses(3), True, -5),
-    (gen_recipient_addresses(3), False, "abc123")
+    (gen_recipient_addresses(3), False, "abc123"),
     (gen_recipient_addresses(3), True, "")
 ])
 def test_invalid_deduction_inputs(recipient_addresses,
                                   apply_fee, input_amount):
-    with pytest.raises(IllegalArgumentException):
+    with pytest.raises(IllegalArgumentException.IllegalArgumentException):
         JobcoinClient.calculate_disbursement(
             recipient_addresses, input_amount, apply_fee)
-
 
 
 def test_correct_transactions(client):
