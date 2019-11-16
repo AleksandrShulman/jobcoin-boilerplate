@@ -1,6 +1,6 @@
 import pytest
 
-from jobcoin.jobcoin import JobcoinClient, Transaction, JobcoinInfusion
+from jobcoin.jobcoin import JobcoinClient, JobcoinInfusion, Transaction
 
 
 @pytest.fixture
