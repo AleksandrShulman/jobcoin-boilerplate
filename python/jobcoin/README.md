@@ -1,4 +1,4 @@
-#JOBCOIN CLI and LIBRARY
+#Jobcoin CLI and Library
 
 ##Purpose
 The purpose of this mixer is to disguise the source of funds into 
@@ -112,3 +112,51 @@ Your results should look similar to this:
 
 You are also welcome to add other parameters to pytest, for performance and/or verbosity tuning. For example, -n will allow for parallelized test execution.
 
+# Future Work
+
+## Make jobcoin transfer atomic. This may require some work in the webapp to properly
+implement. For now, all the client can do is triage/retry when something
+abnormal happens in one or more of the transactions.
+
+## Automate Jobcoin creation
+This will require finding out the exact API call that adds jobcoins to an account
+and automating that.
+
+## More testing
+### More functional testing where indicated.
+### Rounding errors
+In particular these can be tricky and
+the various string<->float conversions that take place
+need to be vetted for all types of inputs.
+
+### Input Vetting
+Not all edge cases have been tested, and in particular, malicious input
+needs to be examined.
+
+### Multiple Jobcoin Clients Running In Parallel
+Although the random account creation is supposed to provide isolation in some respects, 
+if more than one client is operating on a shared account, there may be some race conditions.
+This is more a problem for the webapp than the client, but there may be lurking
+interesting race conditions that may be hard to predict apriori.
+
+## Error handling semantics
+Should give more thought into how errors in the REST client
+will map into the CLI layer without leaking implementation details.
+
+In particular, separating out the behavior in the case of a 5xx (as opposed to a 4xx like is defined in the API spec.)
+This kind of touches on the core web service itself which we don't have access to, but
+we should still do the best we can.
+
+## Test runner
+Create a more sophisticated test runner that will run the unit
+and integration tests separately.
+
+
+## Linter
+Add a linter so that code checkins keep code quality high.
+They will keep the code conformant to pep8.
+For log imports, isort will be used to detect improperly formatted imports.
+
+## Code Coverage
+Add codecov or cobertura to the build process in order to verify that newly-added
+features are well tested.
