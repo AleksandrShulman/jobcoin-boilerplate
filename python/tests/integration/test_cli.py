@@ -44,7 +44,7 @@ def test_cli_creates_address():
 
 
 def test_cli_end_to_end():
-    ### TODO: Finish this
+    # TODO: Finish this
     runner = CliRunner()
     address_create_output = runner.invoke(
         cli.main, args=["inputAddress"]).output

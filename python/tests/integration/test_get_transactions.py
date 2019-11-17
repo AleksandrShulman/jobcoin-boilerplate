@@ -14,11 +14,14 @@ def test_get_transactions(client):
 
     # Pull them down
     transaction = transactions[0]
-    if not 'fromAddress' in transaction:
-        txn = JobcoinInfusion(to_address=transaction['toAddress'], amount=transaction['amount'])
+    if 'fromAddress' not in transaction:
+        txn = JobcoinInfusion(to_address=transaction['toAddress'],
+                              amount=transaction['amount'])
         assert txn.from_address == JobcoinClient.JOBCOIN_GENERATOR
     else:
-        txn = Transaction(transaction['fromAddress'], transaction['toAddress'], transaction['amount'])
+        txn = Transaction(transaction['fromAddress'],
+                          transaction['toAddress'],
+                          transaction['amount'])
 
     # Verify them
     assert txn.amount == transaction['amount']

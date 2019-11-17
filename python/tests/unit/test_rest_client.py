@@ -59,7 +59,8 @@ def test_percentage_deduction(recipient_addresses, apply_fee, expected_result):
 
 
 @pytest.mark.parametrize("recipient_addresses, apply_fee, input_amount", [
-    (list(), True, FULL_TRANSFER_AMOUNT * (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / 100),
+    (list(), True, FULL_TRANSFER_AMOUNT *
+     (100 - JobcoinClient.DISBURSEMENT_FEE_PERCENT) / 100),
     (gen_recipient_addresses(1), False, None),
     (gen_recipient_addresses(3), True, -5),
     (gen_recipient_addresses(3), False, "abc123"),
@@ -90,7 +91,7 @@ def test_send_coin_cannot_verify_transaction(txn_verification_failing_client):
     assert len(failures) == num_addresses
 
 
-#### TODO: #####
+# TODO:
 # Test out other failure modes such as:
 # 1. Exceptions occurring during either the transfer or the verification
 # 2. Partial success or partial failure
