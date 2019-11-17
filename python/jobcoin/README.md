@@ -114,15 +114,15 @@ You are also welcome to add other parameters to pytest, for performance and/or v
 
 # Future Work
 
-## Make jobcoin transfer atomic. This may require some work in the webapp to properly
-implement. For now, all the client can do is triage/retry when something
+## Make jobcoin Transfer Atomic.
+This may require some work in the webapp to properly implement. For now, all the client can do is triage/retry when something
 abnormal happens in one or more of the transactions.
 
-## Automate Jobcoin creation
+## Automate Jobcoin Creation
 This will require finding out the exact API call that adds jobcoins to an account
 and automating that.
 
-## More testing
+## Moaaar Testing
 ### More functional testing where indicated.
 ### Rounding errors
 In particular these can be tricky and
