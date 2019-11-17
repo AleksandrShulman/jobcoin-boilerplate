@@ -1,6 +1,6 @@
-#Jobcoin CLI and Library
+# Jobcoin CLI and Library
 
-##Purpose
+## Purpose
 The purpose of this mixer is to disguise the source of funds into 
 an account when paying from that account.
 
@@ -13,10 +13,10 @@ sent to the provided accounts and are usable.
 
 Please note that there is a fee (default 4%), to any money transferred.
 
-###Usage
+### Usage
 $> cli.py [user_address]
 
-###Example
+### Example
 Sample input:
 >$> cli.py abc
 
@@ -47,7 +47,7 @@ Sample output:
 >[quit() to exit] > 
 
 
-##Failure Modes
+## Failure Modes
 ### Insufficient Funds
 There will be an error indicating that there are not enough
 funds. Right now we can potentially find out mid-transaction
